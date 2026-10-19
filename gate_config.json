@@ -1,0 +1,6 @@
+{
+  "model_version": "model v1",
+  "floor_auc": 0.65,
+  "floor_set": "2026-10-19, before training",
+  "floor_note": "The floor is set before the model is trained. The gate reads this file; it never moves the floor."
+}

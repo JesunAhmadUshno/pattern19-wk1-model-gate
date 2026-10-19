@@ -1,0 +1,7 @@
+ModelGate promotion check
+model: model v1
+[1/3] eval record ... MISSING (records/eval_record.json not found)
+[2/3] data card ... MISSING (records/data_card.md not found)
+[3/3] approval line ... MISSING (no APPROVED line in records/approvals.log)
+PROMOTE model v1: BLOCKED
+reasons: no eval record; no data card; no approval line

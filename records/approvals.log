@@ -1,0 +1,4 @@
+# ModelGate approvals log. One line per approval, format:
+# APPROVED <full name> <YYYY-MM-DD>
+# The gate looks for one APPROVED line. Comments and blanks are ignored.
+APPROVED Jesun Ahmad Ushno 2026-10-19

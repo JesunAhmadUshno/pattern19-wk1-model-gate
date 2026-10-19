@@ -1,0 +1,6 @@
+ModelGate promotion check
+model: model v1
+[1/3] eval record ... OK (AUC 0.724 >= floor 0.65, 6000 frozen rows, hash verified)
+[2/3] data card ... OK (records/data_card.md)
+[3/3] approval line ... OK (Jesun Ahmad Ushno, 2026-10-19)
+PROMOTE model v1: PASS

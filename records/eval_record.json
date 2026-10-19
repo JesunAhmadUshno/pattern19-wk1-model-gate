@@ -1,0 +1,10 @@
+{
+  "model": "model v1",
+  "evaluated": "2026-10-19",
+  "test_file": "data/test_frozen.csv",
+  "test_rows": 6000,
+  "test_sha256": "b76b978228076841397d4bff3861f3c3d88e76afb7f4d004f57dea8dad488acb",
+  "auc": 0.724,
+  "accuracy": 0.811,
+  "floor_auc": 0.65
+}
