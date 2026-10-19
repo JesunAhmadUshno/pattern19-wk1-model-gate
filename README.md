@@ -1,6 +1,8 @@
 # ModelGate: a training pipeline with a gate that can block a bad model
 
-Week 1 of the PROOF roadmap (Pattern 19, Episode 2). The roadmap reads
+Week 1 of the PROOF roadmap (Pattern 19, Episode 2), live at
+[jesunahmadushno.com/roadmap/tangerine-ai-engineer](https://jesunahmadushno.com/roadmap/tangerine-ai-engineer/).
+The roadmap reads
 one real job post as a test list; this build answers its first line, the
 one about engineering delivery of an AI platform: training and
 deployment pipelines, monitoring, and governance. So the pipeline is
