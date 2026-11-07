@@ -5,7 +5,7 @@
   clients. Downloaded 2026-10-19 from
   archive.ics.uci.edu.
 - File: data/credit.csv, sha256 84ba892a2a55a0d7...
-- Rows: 30000. Columns: 25 (23 features + target).
+- Rows: 30000. Columns: 25 (ID + 23 features + target).
 - Target: default_next_month, 1 = the client defaulted the next
   month. Positive rate in source: 0.221.
 - Frozen test split: data/test_frozen.csv, 6000 rows,

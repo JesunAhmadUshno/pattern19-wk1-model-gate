@@ -21,7 +21,7 @@ def main():
   clients. Downloaded {date.today().isoformat()} from
   archive.ics.uci.edu.
 - File: data/credit.csv, sha256 {sha256_file(DATA_CSV)[:16]}...
-- Rows: {len(df)}. Columns: {len(df.columns)} (23 features + target).
+- Rows: {len(df)}. Columns: {len(df.columns)} (ID + 23 features + target).
 - Target: default_next_month, 1 = the client defaulted the next
   month. Positive rate in source: {pos:.3f}.
 - Frozen test split: data/test_frozen.csv, {len(test)} rows,
