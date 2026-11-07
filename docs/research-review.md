@@ -21,7 +21,7 @@ uncertainty and baseline the records lack, labelled as computed there.
 
 | Criterion | Grade | Notes |
 |---|---|---|
-| Question | A | One falsifiable engineering question: does the gate block when any record is missing, forged, tampered or below the floor? |
+| Question | A | One falsifiable engineering question: does the gate block when any record is missing, faked, tampered or below the floor? |
 | Hypotheses | B | The gate's pass/block rules are stated in `src/gate.py` and README; the model has no hypothesis beyond "beats a 0.65 AUC floor". |
 | Method | B | Read, decide, report order; hashed frozen split; floor fixed before training. Single split and single seed. |
 | Baselines | C | No baseline in the records. Computed: always predicting "no default" scores 77.9% on the frozen rows against the recorded 81.1%. |

@@ -206,7 +206,7 @@ function GateConsole({ lab }) {
       <div className="head">
         <div>
           <p className="eyebrow">Live gate console</p>
-          <h2>Remove a record, forge an approval, or tamper with the test set.</h2>
+          <h2>Remove a record, fake an approval, or tamper with the test set.</h2>
           <p className="sub">
             A line-for-line JavaScript port of <a href={blob('src/gate.py')}>src/gate.py</a>, fed the repo’s real records. The build fails unless this port prints exactly the two recorded transcripts in <code>demo/</code>.
             The SHA-256 of <code>data/test_frozen.csv</code> is computed here from the served file.
