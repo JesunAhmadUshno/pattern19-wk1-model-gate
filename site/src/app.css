@@ -1,0 +1,15 @@
+/* Page-specific additions on top of the shared Lab OS styles.css */
+.term { margin: 0; padding: 14px 16px; border-radius: 10px; background: #1b1915; color: #e9e4da; font: 500 12px/1.65 'JetBrains Mono', ui-monospace, monospace;
+  white-space: pre-wrap; word-break: break-word; overflow-x: auto; min-height: 168px; max-height: 340px; overflow-y: auto; }
+.term.light { background: var(--surface-strong); color: var(--text); border: 1px solid var(--border); }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 14px; }
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--primary); width: 16px; height: 16px; }
+textarea { width: 100%; padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+  font: 500 11.5px/1.55 'JetBrains Mono', ui-monospace, monospace; resize: vertical; }
+textarea:focus-visible, .check input:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 2px; }
+.hash { word-break: break-all; font-size: 11px; }
+.seg.scroll-x { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.seg button { white-space: nowrap; }
+.btn.ghost { padding: 8px 14px; }
+@media (max-width: 760px) { .tile .num { font-size: 32px; } }
