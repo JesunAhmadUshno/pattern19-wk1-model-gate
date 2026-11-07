@@ -19,7 +19,11 @@ from common import (APPROVALS_LOG, CONFIG, DATA_CARD, EVAL_RECORD,
                     TEST_FROZEN, TEST_HASH_FILE, sha256_file)
 
 
-def check_eval():
+def is_number(x):
+    return isinstance(x, (int, float)) and not isinstance(x, bool)
+
+
+def check_eval(floor):
     if not os.path.exists(EVAL_RECORD):
         return False, "MISSING (records/eval_record.json not found)", \
             "no eval record"
@@ -29,8 +33,15 @@ def check_eval():
     if rec.get("test_sha256") != frozen or actual != frozen:
         return False, "FAIL (test set hash mismatch: the scored set " \
             "is not the frozen set)", "eval earned on a swapped test set"
-    floor = rec.get("floor_auc")
-    if rec.get("auc", 0) < floor:
+    # The floor comes from gate_config.json (set before training), never
+    # from the eval record, so editing the record cannot lower the bar.
+    if not is_number(floor):
+        return False, "FAIL (gate_config.json has no numeric floor_auc)", \
+            "no floor in gate_config.json"
+    if not is_number(rec.get("auc")):
+        return False, "FAIL (eval record has no numeric auc)", \
+            "eval record has no numeric AUC"
+    if rec["auc"] < floor:
         return False, f"FAIL (AUC {rec['auc']} below floor {floor})", \
             "score below the floor set before training"
     return True, (f"OK (AUC {rec['auc']} >= floor {floor}, "
@@ -59,7 +70,7 @@ def main():
     cfg = json.load(open(CONFIG))
     version = cfg["model_version"]
     checks = [
-        ("eval record", check_eval()),
+        ("eval record", check_eval(cfg.get("floor_auc"))),
         ("data card", check_data_card()),
         ("approval line", check_approval()),
     ]
