@@ -53,7 +53,7 @@ assert.ok(ci.lo < a && a < ci.hi, 'bootstrap interval brackets the point AUC');
 console.log('model ok', { hash: actualHash.slice(0, 16), trainRows: train.length, refitAuc: +a.toFixed(4), recordedAuc: rec.auc, accuracy: +acc.toFixed(4) });
 
 // Every source line the findings window cites must still exist.
-for (const [f, needle] of [['src/gate.py', 'check_eval(cfg.get("floor_auc"))'], ['src/gate.py', 'if not is_number(rec.get("auc"))'], ['src/gate.py', 'APPROVED\\s+'],
+for (const [f, needle] of [['src/gate.py', 'check_eval(cfg.get("floor_auc"))'], ['src/gate.py', 'if not is_auc(rec.get("auc"))'], ['src/gate.py', 'APPROVED\\s+'],
   ['src/evaluate.py', 'record = {'], ['src/evaluate.py', 'auc = roc_auc_score'], ['src/evaluate.py', '"evaluated": date.today()'], ['src/train.py', 'features = [c for c']])
   assert.ok(M.lineOf(read(f), needle) > 0, `${f} no longer contains ${needle}`);
 assert.match(read('models/model_v1/model_card.md'), /Train rows: 24000/);

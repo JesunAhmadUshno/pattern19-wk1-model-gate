@@ -3,6 +3,7 @@
 
 // ---- Gate: a line-for-line port of src/gate.py (check_eval, check_data_card, check_approval, main) ----
 const isNumber = (x) => typeof x === 'number' && Number.isFinite(x);
+const isAuc = (x) => isNumber(x) && x >= 0 && x <= 1;
 // Python prints 0.65 as "0.65" and 1.0 as "1.0"; JS would print "1".
 const py = (x) => (Number.isInteger(x) ? x.toFixed(1) : String(x));
 
@@ -12,9 +13,9 @@ function checkEval(evalText, floor, frozenHashText, actualHash) {
   const frozen = frozenHashText.trim();
   if (rec.test_sha256 !== frozen || actualHash !== frozen)
     return [false, 'FAIL (test set hash mismatch: the scored set is not the frozen set)', 'eval earned on a swapped test set'];
-  if (!isNumber(floor)) return [false, 'FAIL (gate_config.json has no numeric floor_auc)', 'no floor in gate_config.json'];
-  if (!isNumber(rec.auc)) return [false, 'FAIL (eval record has no numeric auc)', 'eval record has no numeric AUC'];
-  if (rec.auc < floor) return [false, `FAIL (AUC ${py(rec.auc)} below floor ${py(floor)})`, 'score below the floor set before training'];
+  if (!isAuc(floor)) return [false, 'FAIL (gate_config.json has no numeric floor_auc)', 'no floor in gate_config.json'];
+  if (!isAuc(rec.auc)) return [false, 'FAIL (eval record has no numeric auc)', 'eval record has no numeric AUC'];
+  if (!(rec.auc >= floor)) return [false, `FAIL (AUC ${py(rec.auc)} below floor ${py(floor)})`, 'score below the floor set before training'];
   return [true, `OK (AUC ${py(rec.auc)} >= floor ${py(floor)}, ${rec.test_rows} frozen rows, hash verified)`, ''];
 }
 

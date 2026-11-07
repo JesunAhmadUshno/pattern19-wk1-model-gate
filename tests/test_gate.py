@@ -140,6 +140,24 @@ class GateTest(unittest.TestCase):
         self.box.eval["auc"] = "high"
         self.assertBlocked("eval record has no numeric AUC")
 
+    # json.load accepts NaN and Infinity. NaN < floor is False, so a gate
+    # that only checks "below the floor" would let a NaN score through.
+    def test_nan_auc_blocks(self):
+        self.box.eval["auc"] = float("nan")
+        self.assertBlocked("eval record has no numeric AUC")
+
+    def test_infinite_auc_blocks(self):
+        self.box.eval["auc"] = float("inf")
+        self.assertBlocked("eval record has no numeric AUC")
+
+    def test_auc_above_one_blocks(self):
+        self.box.eval["auc"] = 1.5
+        self.assertBlocked("eval record has no numeric AUC")
+
+    def test_nan_floor_blocks(self):
+        self.box.config["floor_auc"] = float("nan")
+        self.assertBlocked("no floor in gate_config.json")
+
     def test_config_without_floor_blocks_instead_of_crashing(self):
         del self.box.config["floor_auc"]
         self.assertBlocked("no floor in gate_config.json")

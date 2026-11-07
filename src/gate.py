@@ -10,6 +10,7 @@ The check order is fixed: read records, decide, and only then report.
 A gate that cannot say no is a decoration. Exit 0 = PASS, 1 = BLOCKED.
 """
 import json
+import math
 import os
 import re
 import sys
@@ -20,7 +21,13 @@ from common import (APPROVALS_LOG, CONFIG, DATA_CARD, EVAL_RECORD,
 
 
 def is_number(x):
-    return isinstance(x, (int, float)) and not isinstance(x, bool)
+    # json.load accepts NaN and Infinity; neither is a usable score or floor.
+    return (isinstance(x, (int, float)) and not isinstance(x, bool)
+            and math.isfinite(x))
+
+
+def is_auc(x):
+    return is_number(x) and 0.0 <= x <= 1.0
 
 
 def check_eval(floor):
@@ -35,13 +42,13 @@ def check_eval(floor):
             "is not the frozen set)", "eval earned on a swapped test set"
     # The floor comes from gate_config.json (set before training), never
     # from the eval record, so editing the record cannot lower the bar.
-    if not is_number(floor):
+    if not is_auc(floor):
         return False, "FAIL (gate_config.json has no numeric floor_auc)", \
             "no floor in gate_config.json"
-    if not is_number(rec.get("auc")):
+    if not is_auc(rec.get("auc")):
         return False, "FAIL (eval record has no numeric auc)", \
             "eval record has no numeric AUC"
-    if rec["auc"] < floor:
+    if not rec["auc"] >= floor:  # fail closed: pass only on a clear yes
         return False, f"FAIL (AUC {rec['auc']} below floor {floor})", \
             "score below the floor set before training"
     return True, (f"OK (AUC {rec['auc']} >= floor {floor}, "
