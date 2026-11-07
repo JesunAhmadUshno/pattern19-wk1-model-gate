@@ -1,4 +1,9 @@
-pandas>=2.0
-numpy>=1.26
-scikit-learn>=1.4
-xlrd>=2.0
+# Exact versions that reproduced records/eval_record.json (AUC 0.724,
+# accuracy 0.811) and the frozen test hash on Python 3.12.3, 2026-11-07.
+pandas==3.1.1
+numpy==2.5.4
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0
+threadpoolctl==3.8.0
+xlrd==2.0.2
