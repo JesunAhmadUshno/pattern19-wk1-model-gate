@@ -1,0 +1,2 @@
+# The frozen test file is hashed byte for byte; never normalize its line endings.
+data/*.csv -text

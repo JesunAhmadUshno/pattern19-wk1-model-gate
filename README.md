@@ -1,5 +1,9 @@
 # ModelGate: a training pipeline with a gate that can block a bad model
 
+Live dashboard: https://jesunahmadushno.github.io/pattern19-wk1-model-gate/
+(the gate rerun in your browser on these records, a live refit of the
+model, and an audit of what the gate does not yet check).
+
 Week 1 of the PROOF roadmap (Pattern 19, Episode 2), live at
 [jesunahmadushno.com/roadmap/tangerine-ai-engineer](https://jesunahmadushno.com/roadmap/tangerine-ai-engineer/).
 The roadmap reads
@@ -69,6 +73,24 @@ python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 ./run_demo.sh
 ```
+
+`requirements.txt` pins the exact versions that reproduced the recorded
+AUC 0.724, accuracy 0.811 and the frozen test hash on Python 3.12.3.
+
+## Tests
+
+```
+python3 -m unittest discover -s tests -v
+```
+
+`tests/test_gate.py` (standard library only) builds throwaway record sets
+and checks that the gate blocks on a missing eval record, data card or
+approval line, a malformed approval, a tampered test file, an AUC below
+the floor, an eval record that tries to carry its own lower floor, and a
+malformed eval record, and that the shipped records reproduce
+`demo/run2_pass.txt` exactly. The Pages workflow runs these before it
+builds the dashboard. `docs/research-review.md` grades the build against a
+research rubric and lists what it would take to close each gap.
 
 `src/get_data.py` downloads the dataset from the UCI Machine Learning
 Repository (public, 2005, Taiwan card clients) and normalizes it to
