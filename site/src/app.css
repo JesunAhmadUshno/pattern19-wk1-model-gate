@@ -1,15 +1,33 @@
+/* Hallmark · v2.0.0 · Batch 2 rollout 2026-11-15 · Archetype B tool page: tokens, labels, focus and motion standardised; data, copy and structure preserved */
+/* Hallmark · pre-emit critique: P3 H4 E4 S4 R5 V3 · weakest: V, one of the Lab OS dashboards on a shared house pattern; this pass adds the money links and the chat widget and brings the CSS to the floor only */
+:root {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --lit-1b1915: #1b1915;
+  --lit-e9e4da: #e9e4da;
+}
 /* Page-specific additions on top of the shared Lab OS styles.css */
-.term { margin: 0; padding: 14px 16px; border-radius: 10px; background: #1b1915; color: #e9e4da; font: 500 12px/1.65 'JetBrains Mono', ui-monospace, monospace;
+.term { margin: 0; padding: 14px 16px; border-radius: 10px; background: var(--lit-1b1915); color: var(--lit-e9e4da); font:500 12px/1.65  var(--font-mono);
   white-space: pre-wrap; word-break: break-word; overflow-x: auto; min-height: 168px; max-height: 340px; overflow-y: auto; }
 .term.light { background: var(--surface-strong); color: var(--text); border: 1px solid var(--border); }
 .checks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 14px; }
 .check { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
 .check input { accent-color: var(--primary); width: 16px; height: 16px; }
 textarea { width: 100%; padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
-  font: 500 11.5px/1.55 'JetBrains Mono', ui-monospace, monospace; resize: vertical; }
+  font:500 11.5px/1.55  var(--font-mono); resize: vertical; }
 textarea:focus-visible, .check input:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 2px; }
 .hash { word-break: break-all; font-size: 11px; }
 .seg.scroll-x { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .seg button { white-space: nowrap; }
 .btn.ghost { padding: 8px 14px; }
 @media (max-width: 760px) { .tile .num { font-size: 32px; } }
+
+/* Batch 2 rollout additions: support links and skip link */
+.support { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+.support a { color: inherit; font-weight: 600; padding: 8px 4px; }
+.support a:hover { opacity: 0.75; }
+.skip { position: absolute; left: 16px; top: -48px; z-index: 100; background: var(--surface-strong); color: var(--text); padding: 8px 16px; border-radius: var(--radius-md); transition: transform 0.18s ease, opacity 0.18s ease; opacity: 0; }
+.skip:focus-visible { top: 36px; opacity: 1; outline: 3px solid var(--primary); outline-offset: 2px; }
+.btn:active { transform: translateY(1px); }
+.dock a:active { transform: translateY(-2px); }
