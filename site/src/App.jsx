@@ -26,7 +26,7 @@ const TRAIN_ROWS = +modelCardText.match(/Train rows: (\d+)/)[1];
 const N_TESTS = (testSrc.match(/^    def test_/gm) || []).length;
 const PROTECTED = ['ID', 'SEX', 'MARRIAGE', 'AGE'];
 
-const SECTIONS = [['top', 'Overview', '◎'], ['gate', 'Gate', '⛨'], ['runs', 'Recorded runs', '▶'], ['records', 'Evidence', '▤'], ['scorecard', 'Scorecard', '◢'], ['audit', 'Audit', '⚖'], ['review', 'Findings', '✓'], ['reproduce', 'Reproduce', '❯_']];
+const SECTIONS = [['top', 'Overview', '◎'], ['gate', 'Gate', '⛨'], ['flow', 'Flow', '⇄'], ['runs', 'Recorded runs', '▶'], ['records', 'Evidence', '▤'], ['scorecard', 'Scorecard', '◢'], ['audit', 'Audit', '⚖'], ['review', 'Findings', '✓'], ['reproduce', 'Reproduce', '❯_']];
 
 function useReveal() {
   useEffect(() => {
@@ -124,11 +124,12 @@ export default function App() {
   const lab = useLab();
   const [threshold, setThreshold] = useState(0.5);
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
       <GateConsole lab={lab} />
+      <GateFlow />
       <RecordedRuns />
       <Evidence lab={lab} />
       <Scorecard lab={lab} threshold={threshold} setThreshold={setThreshold} />
@@ -138,7 +139,7 @@ export default function App() {
       <Dock />
       <footer>
         Data: Default of Credit Card Clients, UCI Machine Learning Repository (Yeh and Lien, 2009). Every number on this page is read from the repo’s <code>records/</code>, <code>demo/</code> and <code>gate_config.json</code> at build time, or computed in your browser from <code>data/*.csv</code>, and labelled which.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
@@ -202,7 +203,7 @@ function GateConsole({ lab }) {
   const preset = (shipped) => { setHasEval(shipped); setHasCard(shipped); setApprovals(shipped ? approvalsText : APPROVAL_HEADER); setFloor(config.floor_auc); setTamper(false); };
 
   return (
-    <section id="gate" className="card window reveal" data-title="gate.py — live in your browser">
+    <section id="gate" className="card window reveal" data-title="gate.py - live in your browser">
       <div className="head">
         <div>
           <p className="eyebrow">Live gate console</p>
@@ -269,9 +270,44 @@ function Replay({ title, text, tone }) {
   );
 }
 
+function GateFlow() {
+  const box = (x, y, w, title, sub) => (
+    <g key={title}>
+      <rect x={x} y={y} width={w} height={54} rx={12} fill="var(--surface-strong)" stroke="var(--border)" />
+      <text x={x + w / 2} y={y + 23} textAnchor="middle" fill="var(--text)" fontSize={13} fontWeight={600}>{title}</text>
+      <text x={x + w / 2} y={y + 41} textAnchor="middle">{sub}</text>
+    </g>
+  );
+  const arrow = (x1, y1, x2, y2, key) => (
+    <path key={key} d={`M${x1} ${y1} L${x2} ${y2}`} stroke="var(--muted)" strokeWidth={1.5} fill="none" markerEnd="url(#gf-ah)" />
+  );
+  return (
+    <section id="flow" className="card window reveal" data-title="gate-flow.svg">
+      <p className="eyebrow">How the gate decides</p>
+      <h2>Records in, <em>one verdict</em> out.</h2>
+      <svg className="chart" viewBox="0 0 960 250" role="img" aria-label="Gate flow: credit data trains a model, the model is scored, the gate checks the records, and the model is promoted when they pass or blocked when they do not" style={{ marginTop: 16 }}>
+        <defs><marker id="gf-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)" /></marker></defs>
+        {box(10, 30, 150, 'Credit data', 'data/*.csv')}
+        {box(215, 30, 150, 'Train model', 'train.py')}
+        {box(420, 30, 150, 'Score model', 'evaluate.py')}
+        {box(625, 30, 170, 'Gate checks', 'gate.py')}
+        {box(625, 160, 170, 'Promote', 'records pass')}
+        {box(420, 160, 150, 'Block', 'records missing')}
+        {arrow(160, 57, 211, 57, 'a1')}
+        {arrow(365, 57, 416, 57, 'a2')}
+        {arrow(570, 57, 621, 57, 'a3')}
+        {arrow(710, 84, 710, 156, 'a4')}
+        {arrow(660, 84, 540, 156, 'a5')}
+        <text x={726} y={124}>pass</text>
+        <text x={520} y={124}>fail</text>
+      </svg>
+    </section>
+  );
+}
+
 function RecordedRuns() {
   return (
-    <section id="runs" className="card window reveal" data-title="run_demo.sh — recorded">
+    <section id="runs" className="card window reveal" data-title="run_demo.sh - recorded">
       <p className="eyebrow">Recorded replay</p>
       <h2>The done test, as it actually printed.</h2>
       <p className="sub">
@@ -298,7 +334,7 @@ function Evidence({ lab }) {
   const [tab, setTab] = useState(0);
   const [name, path, text] = FILES[tab];
   return (
-    <section id="records" className="card window reveal" data-title={`${name} — evidence records`}>
+    <section id="records" className="card window reveal" data-title={`${name} - evidence records`}>
       <div className="head">
         <div>
           <p className="eyebrow">Evidence records</p>
@@ -340,7 +376,7 @@ function Scorecard({ lab, threshold, setThreshold }) {
   const step = Math.max(1, Math.floor(curve.length / 600));
   const drawn = curve.filter((_, i) => i % step === 0 || i === curve.length - 1);
   return (
-    <section id="scorecard" className="card window reveal" data-title="roc.svg — browser refit">
+    <section id="scorecard" className="card window reveal" data-title="roc.svg - browser refit">
       <div className="head">
         <div>
           <p className="eyebrow">Model scorecard · computed in your browser</p>
@@ -429,7 +465,7 @@ function Audit({ lab, threshold }) {
   const toggle = (f, on) => setDrop((d) => (on ? [...d, f] : d.filter((x) => x !== f)));
   const pending = res && res.drop !== drop;
   return (
-    <section id="audit" className="card window reveal" data-title="audit.ipynb — ablation · subgroups">
+    <section id="audit" className="card window reveal" data-title="audit.ipynb - ablation · subgroups">
       <p className="eyebrow">Ablation and subgroup audit · computed in your browser</p>
       <h2>The model uses the row ID and protected attributes. What do they buy?</h2>
       <p className="sub">
@@ -473,7 +509,7 @@ function Review() {
     { ok: false, t: 'Records are stamped with the run date', f: 'src/evaluate.py', l: lineOf(evaluateSrc, '"evaluated": date.today()'), d: `Rerunning rewrites shipped files with today’s date, so a byte-identical rerun is impossible. requirements.txt is now pinned to the versions that reproduced AUC ${rec.auc}.` },
   ];
   return (
-    <section id="review" className="card window reveal" data-title="REVIEW.md — audit findings">
+    <section id="review" className="card window reveal" data-title="REVIEW.md - audit findings">
       <p className="eyebrow">Limitations and threats</p>
       <h2>What the gate checks, and what it does not yet.</h2>
       <p className="sub">Line numbers are computed from the source at build time. The full grading against a research rubric is in <a href={blob('docs/research-review.md')}>docs/research-review.md</a>. This is a teaching model on one public 2005 dataset, never a credit decision tool.</p>
@@ -500,7 +536,7 @@ function Reproduce() {
     ['docs/research-review.md', 'Research review', 'Rubric grades and gaps'],
   ];
   return (
-    <section id="reproduce" className="card window reveal" data-title="Terminal — reproduce">
+    <section id="reproduce" className="card window reveal" data-title="Terminal - reproduce">
       <p className="eyebrow">Reproduce it</p>
       <h2>Three commands rerun the pipeline and the gate.</h2>
       <ol className="steps" style={{ marginTop: 16 }}>
