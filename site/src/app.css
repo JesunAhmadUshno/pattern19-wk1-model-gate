@@ -31,3 +31,5 @@ textarea:focus-visible, .check input:focus-visible { outline: 3px solid color-mi
 .skip:focus-visible { top: 36px; opacity: 1; outline: 3px solid var(--primary); outline-offset: 2px; }
 .btn:active { transform: translateY(1px); }
 .dock a:active { transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }

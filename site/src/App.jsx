@@ -26,7 +26,7 @@ const TRAIN_ROWS = +modelCardText.match(/Train rows: (\d+)/)[1];
 const N_TESTS = (testSrc.match(/^    def test_/gm) || []).length;
 const PROTECTED = ['ID', 'SEX', 'MARRIAGE', 'AGE'];
 
-const SECTIONS = [['top', 'Overview', '◎'], ['gate', 'Gate', '⛨'], ['runs', 'Recorded runs', '▶'], ['records', 'Evidence', '▤'], ['scorecard', 'Scorecard', '◢'], ['audit', 'Audit', '⚖'], ['review', 'Findings', '✓'], ['reproduce', 'Reproduce', '❯_']];
+const SECTIONS = [['top', 'Overview', '◎'], ['gate', 'Gate', '⛨'], ['flow', 'Flow', '⇄'], ['runs', 'Recorded runs', '▶'], ['records', 'Evidence', '▤'], ['scorecard', 'Scorecard', '◢'], ['audit', 'Audit', '⚖'], ['review', 'Findings', '✓'], ['reproduce', 'Reproduce', '❯_']];
 
 function useReveal() {
   useEffect(() => {
@@ -129,6 +129,7 @@ export default function App() {
       <div className="glow" aria-hidden="true" />
       <Hero />
       <GateConsole lab={lab} />
+      <GateFlow />
       <RecordedRuns />
       <Evidence lab={lab} />
       <Scorecard lab={lab} threshold={threshold} setThreshold={setThreshold} />
@@ -266,6 +267,41 @@ function Replay({ title, text, tone }) {
       <pre className="term">{lines.slice(0, n).join('\n')}{n < lines.length ? '\n▌' : ''}</pre>
       <p className="hint"><span className={`pill ${tone}`}>recorded output of a real run</span></p>
     </div>
+  );
+}
+
+function GateFlow() {
+  const box = (x, y, w, title, sub) => (
+    <g key={title}>
+      <rect x={x} y={y} width={w} height={54} rx={12} fill="var(--surface-strong)" stroke="var(--border)" />
+      <text x={x + w / 2} y={y + 23} textAnchor="middle" fill="var(--text)" fontSize={13} fontWeight={600}>{title}</text>
+      <text x={x + w / 2} y={y + 41} textAnchor="middle">{sub}</text>
+    </g>
+  );
+  const arrow = (x1, y1, x2, y2, key) => (
+    <path key={key} d={`M${x1} ${y1} L${x2} ${y2}`} stroke="var(--muted)" strokeWidth={1.5} fill="none" markerEnd="url(#gf-ah)" />
+  );
+  return (
+    <section id="flow" className="card window reveal" data-title="gate-flow.svg">
+      <p className="eyebrow">How the gate decides</p>
+      <h2>Records in, <em>one verdict</em> out.</h2>
+      <svg className="chart" viewBox="0 0 960 250" role="img" aria-label="Gate flow: credit data trains a model, the model is scored, the gate checks the records, and the model is promoted when they pass or blocked when they do not" style={{ marginTop: 16 }}>
+        <defs><marker id="gf-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)" /></marker></defs>
+        {box(10, 30, 150, 'Credit data', 'data/*.csv')}
+        {box(215, 30, 150, 'Train model', 'train.py')}
+        {box(420, 30, 150, 'Score model', 'evaluate.py')}
+        {box(625, 30, 170, 'Gate checks', 'gate.py')}
+        {box(625, 160, 170, 'Promote', 'records pass')}
+        {box(420, 160, 150, 'Block', 'records missing')}
+        {arrow(160, 57, 211, 57, 'a1')}
+        {arrow(365, 57, 416, 57, 'a2')}
+        {arrow(570, 57, 621, 57, 'a3')}
+        {arrow(710, 84, 710, 156, 'a4')}
+        {arrow(660, 84, 540, 156, 'a5')}
+        <text x={726} y={124}>pass</text>
+        <text x={520} y={124}>fail</text>
+      </svg>
+    </section>
   );
 }
 
